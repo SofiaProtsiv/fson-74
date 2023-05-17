@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import ProductCard from '../ProductCard';
+
+// import ProductCard from '../ProductCard/ProductCardInline'👎🏼
+// import ProductCard from '../ProductCard/ProductCardCss'; 👎🏼
+// import ProductCard from '../ProductCard/ProductCardModule'; 👍🏼
+// import ProductCard from '../ProductCard/ProductCardJss'; 👍🏼👎🏼
+// import ProductCard from '../ProductCard/ProductCardTailwind'; 👍🏼👎🏼
+import ProductCard from '../ProductCard/ProductCardStyledComponents'; //👍🏼
 
 export default function ProductList({data}) {
     return (
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-        {data.map(({ id, price, title, thumbnail, brand }) => {
+        {data.map(({ id, price, title, thumbnail, stock }) => {
           return (
             <ProductCard
               key={id}
@@ -13,11 +19,10 @@ export default function ProductList({data}) {
               price={price}
               title={title}
               thumbnail={thumbnail}
-              brand={brand}
+              stock={stock}
             />
           );
         })}
-        {/* {productCard({image: thumbnail, title:"Dress", price="29"})} */}
       </div>
     )
 }
