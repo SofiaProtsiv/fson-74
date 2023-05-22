@@ -1,13 +1,16 @@
-## 01-module-02-lesson
-### Стилізація
+## 02-module-01-lesson
+### Події. Стан.
 
-- Vanilla CSS and preprocessors
-- Inline styles
-- CSS modules
-- [Normalizing styles](https://www.npmjs.com/package/modern-normalize)
-- CSS in JS with [Emotion library](https://emotion.sh/docs/introduction)
-    - [vscode-styled-components](https://marketplace.visualstudio.com/items?itemName=styled-components.vscode-styled-components)
-- [Styled-components vs. Emotion for handling CSS](https://blog.logrocket.com/styled-components-vs-emotion-for-handling-css/)
-- [JSS](https://cssinjs.org/react-jss/?v=v10.10.0)
-- [MUI](https://mui.com/)
-- [react-icons library](https://react-icons.github.io/react-icons/)
+- Компоненти-класи
+- Події: SyntheticEvent Object
+- Dнутрішній стан компонента. Початковий стан від props
+- Зміна стану
+- Асинхронність оновлення стану
+- Зміна стану від попереднього
+- Підйом стану
+- Обчислювані дані
+- Робота з колекцією:
+     - Рендер списку
+     - Додавання елемента до колекції
+     - Видалення елемента з колекції
+     - Підрахунок загальної кількості елементів у колекції

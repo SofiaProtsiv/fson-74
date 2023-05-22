@@ -1,27 +1,25 @@
-import ProductList from "./components/ProductList";
-import { products } from "./assets/products";
-import Title from "./components/ui/Title";
+import React from "react";
+import Container from "./components/ui/Container";
+import Example from "./example/Example";
+// import Cart from "./components/Cart/Cart";
+// import Header from "./components/Header/Header";
+// import ProductsList from "./components/ProductsList";
 
-// робота з картинками та svg
-import bgSRC from "./images/bg.jpeg";
-import { BsBookmarkFill } from "react-icons/bs";
-import { Icon } from "./assets/icons";
-
+// const products = [
+//   { id: 1, image: "🍟", price: 8, name: "Fries" },
+//   { id: 2, image: "🥤", price: 4, name: "Coca-Cola" },
+//   { id: 3, image: "🍔", price: 12, name: "Burger" },
+// ]
+// const cart = []
 
 export default function App() {
   return (
-    <div className="bg-white">
-      
-       {/* робота з картинками та svg */}
-      <BsBookmarkFill />
-      <img src="./logo192.png" alt="" />
-      <img src={bgSRC} alt="" />
-      <Icon id="logo"/>
+    <Container>
+      <Example/>
 
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <Title title="Customers also purchased" />
-        <ProductList data={products} />
-      </div>
-    </div>
+      {/* <Header />
+      <ProductsList products={products}/>
+      <Cart cart={cart}/> */}
+    </Container>
   );
 }
