@@ -1,5 +1,5 @@
 import { BsHeartFill } from "react-icons/bs";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import {
   HeaderWrapper,
   Logo,
@@ -8,7 +8,8 @@ import {
   NavigationItem,
 } from "./header.styled";
 
-export default function Header() {
+export default function Header({ cart, handleCartModal, handleAuthModal }) {
+  const totalItem = cart.reduce((total, { quantity }) => total + quantity, 0);
   return (
     <HeaderWrapper>
       <Logo>E-commerse</Logo>
@@ -19,8 +20,13 @@ export default function Header() {
             <BsHeartFill />
           </NavigationItem>
 
-          <NavigationItem>
+          <NavigationItem onClick={handleCartModal}>
             <FaShoppingCart />
+            {totalItem}
+          </NavigationItem>
+
+          <NavigationItem onClick={handleAuthModal}>
+            <FaUserCircle />
           </NavigationItem>
         </NavigationWrapper>
       </NavigationContainer>

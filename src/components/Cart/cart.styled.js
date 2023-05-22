@@ -51,6 +51,9 @@ export const CartItem = styled.li`
 export const ProductName = styled.p`
   font-size: 50px;
 `;
+export const ProductImage = styled.p`
+font-size: 50px;
+`;
 export const ProductPrice = styled.p`
   font-size: 20px;
 `;

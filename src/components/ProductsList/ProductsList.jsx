@@ -2,23 +2,23 @@ import {
   Title,
   ProductList,
   ProductItem,
-  ProductImage,
   ProductPrice,
   Button,
   Wrapper,
+  ProductImage,
 } from "./productsList.styled";
 
-export default function ProductsList({products}) {
+export default function ProductsList({ products, addToCart }){
   return (
     <>
       <Title>Products</Title>
       <ProductList>
         {products.map((product) => (
           <ProductItem key={product.id}>
-            <ProductImage>{product.image}</ProductImage>
+            <ProductImage>{product.name}</ProductImage>
             <Wrapper>
               <ProductPrice>${product.price}</ProductPrice>
-              <Button>Add to Cart</Button>
+              <Button onClick={() => addToCart(product)}>Add to Cart</Button>
             </Wrapper>
           </ProductItem>
         ))}
