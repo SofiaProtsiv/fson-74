@@ -8,7 +8,7 @@ import {
   Wrapper,
 } from "./productsList.styled";
 
-export default function ProductsList({products}) {
+export default function ProductsList({products, handleAddToCart}) {
   return (
     <>
       <Title>Products</Title>
@@ -18,7 +18,7 @@ export default function ProductsList({products}) {
             <ProductImage>{product.image}</ProductImage>
             <Wrapper>
               <ProductPrice>${product.price}</ProductPrice>
-              <Button>Add to Cart</Button>
+              <Button onClick={()=>handleAddToCart(product.id)}>Add to Cart</Button>
             </Wrapper>
           </ProductItem>
         ))}

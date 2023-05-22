@@ -17,24 +17,30 @@ import {
   Text,
 } from "./cart.styled";
 
-export default function Cart({ cart }) {
+export default function Cart({ cart, handleBackdrop, handleToogleCart }) {;
+  
+  const totalPrice = cart.reduce(
+    (total, product) => (total += product.quantity * product.price),
+    0
+  );
+
   return (
-    <Backdrop>
+    <Backdrop onClick={handleBackdrop}>
       <Modal>
-        <CloseButton>
+        <CloseButton onClick={handleToogleCart}>
           <AiOutlineClose />
         </CloseButton>
 
         <ModalContent>
           <Title>Cart</Title>
-          
+
           {cart.length === 0 ? (
             <p>Your cart is empty</p>
           ) : (
             <CartList>
-              {cart.map(({ id, name, price, quantity }) => (
+              {cart.map(({ id, image, price, quantity }) => (
                 <CartItem key={id}>
-                  <ProductName>{name}</ProductName>
+                  <ProductName>{image}</ProductName>
                   <Wrapper>
                     <ProductQuantity>{quantity}</ProductQuantity>X
                     <ProductPrice>${price}</ProductPrice>
@@ -47,7 +53,7 @@ export default function Cart({ cart }) {
 
           <TotalPriceWrapper>
             <Text>Total:</Text>
-            <TotalPrice>$0</TotalPrice>
+            <TotalPrice>${totalPrice}</TotalPrice>
           </TotalPriceWrapper>
         </ModalContent>
       </Modal>

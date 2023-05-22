@@ -10,20 +10,51 @@ import {
   ProductQuantity,
 } from "./example.styled";
 
-function ProductCard({ id, name, price, image }) {
-  return (
-    <ProductItem id={id}>
-      <ProductImage>{image}</ProductImage>
-      <Wrapper>
-        <ProductPrice>${price}</ProductPrice>
-        <CounterWrapper>
-          <Button>-</Button>
-          <ProductQuantity>0</ProductQuantity>
-          <Button>+</Button>
-        </CounterWrapper>
-      </Wrapper>
-    </ProductItem>
-  );
+class ProductCard extends React.Component {
+  state = {
+    count: 0,
+    isDisabled: true
+  };
+
+  handleIncrement = () => {
+    this.setState((prevState) => ({
+      count: (prevState.count += 1),
+      isDisabled: false
+    }));
+  };
+
+  handleDecrement = () => {
+    // if(this.state.count === 0) return;
+    //
+    // this.setState((prevState) => ({
+    //   count: prevState.count > 0 ? prevState.count - 1 : prevState.count,
+    // }));
+
+    if(this.state.count === 0){
+      this.setState(prevState => ({isDisabled: !prevState.isDisabled}))
+      return;
+    }
+    this.setState((prevState) => ({
+      count: (prevState.count -= 1),
+    }));
+  };
+  render() {
+    const { id, price, image } = this.props;
+
+    return (
+      <ProductItem id={id}>
+        <ProductImage>{image}</ProductImage>
+        <Wrapper>
+          <ProductPrice>${price}</ProductPrice>
+          <CounterWrapper>
+            <Button disabled={this.state.isDisabled} onClick={this.handleDecrement}>-</Button>
+            <ProductQuantity>{this.state.count}</ProductQuantity>
+            <Button onClick={this.handleIncrement}>+</Button>
+          </CounterWrapper>
+        </Wrapper>
+      </ProductItem>
+    );
+  }
 }
 
 export default function Example() {
