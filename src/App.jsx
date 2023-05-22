@@ -36,11 +36,11 @@ export default class App extends React.Component {
       (product) => product.id === id
     );
 
-    // шукаємо продукт у базі, який має той ж id який нам прийшов параметром
-    const product = this.state.products.find((product) => product.id === id);
-
     if (!isProductInCart) {
       // якщо продукта немає у корзині, то ми його додаємо та додаємо також нову властивість quantity яка сигналізує нам що цей продукт ми додали в корзину вперше
+
+      // шукаємо продукт у базі, який має той ж id який нам прийшов параметром
+      const product = this.state.products.find((product) => product.id === id);
 
       // оновлюємо стан, розпилюємо попередні значення + додаємо новий продукт з властивістю quantity, яка сигналізує нам що цей продукт ми додали в корзину вперше
       this.setState((prevState) => ({
@@ -60,6 +60,7 @@ export default class App extends React.Component {
       this.setState({ cart: updatedCart });
     }
   };
+  
   render() {
     const { cart, products } = this.state;
 
