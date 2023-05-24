@@ -37,14 +37,15 @@ export const CartList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow: scroll;
+  height: 530px;
 `;
 export const CartItem = styled.li`
   display: flex;
-  gap: 20px;
+  flex-direction: column-reverse;
   justify-content: space-between;
-  align-items: center;
   width: 100%;
-  padding: 10px;
+  padding: 10px 20px;
   border: 1px solid lightgray;
   border-radius: 10px;
 `;
@@ -52,18 +53,25 @@ export const ProductName = styled.p`
   font-size: 50px;
 `;
 export const ProductImage = styled.p`
-font-size: 50px;
+  font-size: 50px;
 `;
 export const ProductPrice = styled.p`
   font-size: 20px;
 `;
-export const ProductQuantity = styled.p`
-  font-size: 20px;
+export const ProductPricePerItem = styled.p`
+  font-size: 12px;
+  color: #a9a9a9;
+`;
+export const PriceWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `;
 export const Wrapper = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+  justify-content: space-between;
 `;
 export const TotalPrice = styled.div`
   display: flex;
@@ -80,11 +88,70 @@ export const TotalPriceWrapper = styled.div`
   background-color: #4f46e5;
   border-radius: 8px;
   padding: 10px 20px;
-  position: absolute;
-  bottom: 30px;
 `;
 export const Text = styled.p`
   color: white;
   font-size: 18px;
   font-weight: 700;
-`
+`;
+export const CounterWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+`;
+export const ProductQuantity = styled.p`
+  color: rgb(55 65 81);
+  font-weight: 700;
+  margin: 0 10px;
+`;
+export const Button = styled.button`
+  display: flex;
+  padding: 0.375rem 0.75rem;
+  background-color: #4f46e5;
+  color: #ffffff;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  justify-content: center;
+  width: 100%;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+
+`;
+export const RemoveButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-end;
+  cursor: pointer;
+
+  & svg {
+    width: 20px;
+    height: 25px;
+  }
+`;
+export const Summary = styled.div`
+  position: absolute;
+  bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const MakeOrderButton = styled.button`
+  width: 340px;
+  background-color: #2b9200e3;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: #ffffff;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  :hover {
+    opacity: 0.85;
+  }
+`;

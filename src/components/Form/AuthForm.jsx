@@ -14,13 +14,13 @@ import {
   ChangeFormLink,
 } from "./authForm.styled";
 
-const initialState = {
+const INITIAL_STATE = {
   email: "",
   password: "",
 };
 
 export default class AuthForm extends React.Component {
-  state = initialState;
+  state = { ...INITIAL_STATE };
 
   handleBackdropClick = (e) => {
     if (e.currentTarget === e.target) {
@@ -29,21 +29,26 @@ export default class AuthForm extends React.Component {
   };
 
   handleChange = (e) => {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
+
     this.props.onSubmit(this.state);
-    this.resetForm();
+
+    this.reset();
+    // this.props.handleAuthModal();
   };
 
-  resetForm = () => {
-    this.setState(initialState);
+  reset = () => {
+    this.setState({ ...INITIAL_STATE });
   };
+
   render() {
     return (
-      <Backdrop onClick={this.props.handleBackdropClick}>
+      <Backdrop onClick={this.handleBackdropClick}>
         <Modal>
           <CloseButton>
             <AiOutlineClose onClick={this.props.handleAuthModal} />

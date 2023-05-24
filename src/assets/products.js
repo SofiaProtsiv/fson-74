@@ -1,0 +1,46 @@
+const products = [
+  { id: 1, name: "Fries", price: 7, image: "🍟", category: "fast food" },
+  { id: 2, name: "Coca Cola", price: 4, image: "🥤", category: "drinks" },
+  { id: 3, name: "Burger", price: 12.5, image: "🍔", category: "fast food" },
+  { id: 4, name: "Cake", price: 10, image: "🍰", category: "sweets" },
+  { id: 5, name: "Pizza", price: 13, image: "🍕", category: "fast food" },
+  { id: 6, name: "Hot Dog", price: 11, image: "🌭", category: "fast food" },
+  { id: 7, name: "Croissant", price: 8, image: "🥐", category: "sweets" },
+  {
+    id: 8,
+    name: "Avocado",
+    price: 2,
+    image: "🥑",
+    category: "vegetables",
+  },
+  { id: 9, name: "Cherry", price: 5, image: "🍒", category: "fruits" },
+  {
+    id: 10,
+    name: "Strawberry",
+    price: 7.5,
+    image: "🍓",
+    category: "fruits",
+  },
+  { id: 11, name: "Banana", price: 5, image: "🍌", category: "fruits" },
+  { id: 12, name: "Apple", price: 4, image: "🍏", category: "fruits" },
+  { id: 13, name: "Donut", price: 5, image: "🍩", category: "sweets" },
+  { id: 14, name: "Kiwi", price: 6, image: "🥝", category: "fruits" },
+  {
+    id: 15,
+    name: "Tomato",
+    price: 6,
+    image: "🍅",
+    category: "vegetables",
+  },
+  { id: 16, name: "Beer", price: 8.5, image: "🍺", category: "drinks" },
+  {
+    id: 17,
+    name: "Carrot",
+    price: 4.5,
+    image: "🥕",
+    category: "vegetables",
+  },
+  { id: 18, name: "Juice", price: 3.5, image: "🧃", category: "drinks" },
+];
+
+export default products;

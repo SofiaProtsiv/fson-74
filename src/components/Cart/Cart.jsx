@@ -1,5 +1,6 @@
 import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { TbTrashXFilled } from "react-icons/tb";
 import {
   Backdrop,
   ModalContent,
@@ -9,23 +10,41 @@ import {
   CartList,
   Title,
   ProductImage,
-  Wrapper,
   ProductPrice,
+  PriceWrapper,
+  CounterWrapper,
   ProductQuantity,
+  Button,
   TotalPrice,
   TotalPriceWrapper,
   Text,
+  Wrapper,
+  RemoveButton,
+  ProductPricePerItem,
+  Summary,
+  MakeOrderButton,
 } from "./cart.styled";
 
-export default function Cart({ handleCartModal, cart, removeFromCart }) {
-  const handleBackdropClick = (event) => {
-    if (event.currentTarget === event.target) {
+export default function Cart({
+  cart,
+  handleCartModal,
+  removeFromCart,
+  handleIncrementProduct,
+  handleDecrementProduct,
+}) {
+  const handleBackdrop = (e) => {
+    if (e.currentTarget === e.target) {
       handleCartModal();
     }
   };
 
+  const totalPrice = cart.reduce(
+    (total, { price, quantity }) => total + price * quantity,
+    0
+  );
+
   return (
-    <Backdrop onClick={handleBackdropClick}>
+    <Backdrop onClick={handleBackdrop}>
       <Modal>
         <CloseButton>
           <AiOutlineClose onClick={handleCartModal} />
@@ -37,25 +56,43 @@ export default function Cart({ handleCartModal, cart, removeFromCart }) {
             <p>Your cart is empty</p>
           ) : (
             <CartList>
-              {cart.map(({ id, name, price, quantity }) => (
+              {cart.map(({ id, image, price, quantity }) => (
                 <CartItem key={id}>
-                  <ProductImage>{name}</ProductImage>
                   <Wrapper>
-                    <ProductQuantity>{quantity}</ProductQuantity>X
-                    <ProductPrice>${price}</ProductPrice>
+                    <ProductImage>{image}</ProductImage>
+                    <CounterWrapper>
+                      <Button onClick={() => handleDecrementProduct(id)}>
+                        -
+                      </Button>
+                      <ProductQuantity>{quantity}</ProductQuantity>
+                      <Button onClick={() => handleIncrementProduct(id)}>
+                        +
+                      </Button>
+                    </CounterWrapper>
+                    <PriceWrapper>
+                      <ProductPrice>${price * quantity}</ProductPrice>
+                      <ProductPricePerItem>
+                        ${price} / per item
+                      </ProductPricePerItem>
+                    </PriceWrapper>
                   </Wrapper>
-                  <button onClick={() => removeFromCart(id)}>Remove</button>
+                  <RemoveButton onClick={() => removeFromCart(id)}>
+                    <TbTrashXFilled />
+                  </RemoveButton>
                 </CartItem>
               ))}
             </CartList>
           )}
 
-          <TotalPriceWrapper>
-            <Text>Total:</Text>
-            <TotalPrice>
-              ${cart.reduce((total, { price, quantity }) => total + price * quantity, 0)}
-            </TotalPrice>
-          </TotalPriceWrapper>
+          {cart.length !== 0 && (
+            <Summary>
+              <TotalPriceWrapper>
+                <Text>Total:</Text>
+                <TotalPrice>${totalPrice}</TotalPrice>
+              </TotalPriceWrapper>
+              <MakeOrderButton>Make order</MakeOrderButton>
+            </Summary>
+          )}
         </ModalContent>
       </Modal>
     </Backdrop>

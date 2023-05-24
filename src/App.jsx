@@ -1,44 +1,83 @@
 import React from "react";
+import { TopBlock, Title, MainSection } from "./app.styled";
 import Container from "./components/ui/Container";
 import Cart from "./components/Cart/Cart";
 import Header from "./components/Header/Header";
 import ProductsList from "./components/ProductsList";
 import AuthForm from "./components/Form/AuthForm";
+import Search from "./components/Search";
+import OrderForm from "./components/OrderForm/OrderForm";
+
+import debounce from "lodash.debounce";
+
+import products from "./assets/products";
 
 export default class App extends React.Component {
   state = {
-    products: [
-      { id: 1, name: "🍟", price: 8 },
-      { id: 2, name: "🥤", price: 4 },
-      { id: 3, name: "🍔", price: 12 },
-    ],
+    products,
     cart: [],
+    searchQuery: "",
     isCartModalOpen: false,
     isAuthModalOpen: false,
   };
 
-  addToCart = (product) => {
-    const { cart } = this.state;
-    const existingProduct = cart.find((item) => item.id === product.id);
+  addToCart = (productId) => {
+    const isProductInCart = this.state.cart.find(
+      (product) => product.id === productId
+    );
 
-    if (existingProduct) {
-      const updatedCart = cart.map((item) => {
-        if (item.id === product.id) {
-          return { ...item, quantity: item.quantity + 1 };
-        }
-        return item;
-      });
-      this.setState({ cart: updatedCart });
-    } else {
-      const updatedCart = [...cart, { ...product, quantity: 1 }];
-      this.setState({ cart: updatedCart });
+    if (!isProductInCart) {
+      const product = this.state.products.find(
+        (product) => product.id === productId
+      );
+
+      this.setState((prevState) => ({
+        cart: [...prevState.cart, { ...product, quantity: 1 }],
+      }));
     }
   };
 
-  removeFromCart = (productId) => {
-    const { cart } = this.state;
-    const updatedCart = cart.filter((product) => product.id !== productId);
+  handleIncrementProduct = (productId) => {
+    const product = this.state.cart.find((product) => product.id === productId);
+
+    const updatedCart = this.state.cart.map((item) => {
+      if (product.id === item.id) {
+        return { ...item, quantity: (item.quantity += 1) };
+      }
+      return item;
+    });
+
     this.setState({ cart: updatedCart });
+  };
+
+  handleDecrementProduct = (productId) => {
+    const product = this.state.cart.find((product) => product.id === productId);
+
+    if (product.quantity <= 1) {
+      this.removeFromCart(productId);
+      return;
+    }
+
+    const updatedCart = this.state.cart.map((item) => {
+      if (product.id === item.id) {
+        return { ...item, quantity: (item.quantity -= 1) };
+      }
+      return item;
+    });
+
+    this.setState({ cart: updatedCart });
+  };
+
+  removeFromCart = (productId) => {
+    const updatedCart = this.state.cart.filter(
+      (product) => product.id !== productId
+    );
+    this.setState({ cart: updatedCart });
+  };
+
+  getProductQuantity = (productId) => {
+    const product = this.state.cart.find((product) => product.id === productId);
+    return product?.quantity;
   };
 
   handleCartModal = () => {
@@ -53,10 +92,26 @@ export default class App extends React.Component {
     }));
   };
 
-  handleForm = (data) => {
+  onSubmit = (data) => {
     console.log(data);
   };
-  
+
+  changeSearchQuery = ({ target }) => {
+    this.setState({
+      searchQuery: target.value,
+    });
+  };
+
+  getProductsBySearchQuery = () => {
+    const normalizedSearchQuery = this.state.searchQuery.toLowerCase();
+
+    const filteredProducts = this.state.products.filter((product) =>
+      product.name.toLowerCase().includes(normalizedSearchQuery)
+    );
+
+    return filteredProducts;
+  };
+
   render() {
     return (
       <Container>
@@ -65,21 +120,41 @@ export default class App extends React.Component {
           handleCartModal={this.handleCartModal}
           handleAuthModal={this.handleAuthModal}
         />
-        <ProductsList
-          products={this.state.products}
-          cart={this.state.cart}
-          addToCart={this.addToCart}
-        />
+
+        {/* <OrderForm onSubmit={this.onSubmit}/> */}
+
+        <MainSection>
+          <TopBlock>
+            <Title>Products</Title>
+            <Search
+              value={this.state.searchQuery}
+              onChange={this.changeSearchQuery}
+            />
+          </TopBlock>
+          {this.getProductsBySearchQuery().length ? (
+            <ProductsList
+              products={this.getProductsBySearchQuery()}
+              cart={this.state.cart}
+              addToCart={this.addToCart}
+            />
+          ) : (
+            <p>No matches found</p>
+          )}
+        </MainSection>
+
         {this.state.isCartModalOpen && (
           <Cart
             cart={this.state.cart}
             removeFromCart={this.removeFromCart}
             handleCartModal={this.handleCartModal}
+            handleDecrementProduct={this.handleDecrementProduct}
+            handleIncrementProduct={this.handleIncrementProduct}
           />
         )}
+
         {this.state.isAuthModalOpen && (
           <AuthForm
-            onSubmit={this.handleForm}
+            onSubmit={this.onSubmit}
             handleAuthModal={this.handleAuthModal}
           />
         )}

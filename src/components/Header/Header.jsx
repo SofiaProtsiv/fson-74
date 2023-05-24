@@ -9,7 +9,7 @@ import {
 } from "./header.styled";
 
 export default function Header({ cart, handleCartModal, handleAuthModal }) {
-  const totalItem = cart.reduce((total, { quantity }) => total + quantity, 0);
+  const totalItems = cart.reduce((total, { quantity }) => total + quantity, 0);
   return (
     <HeaderWrapper>
       <Logo>E-commerse</Logo>
@@ -22,7 +22,7 @@ export default function Header({ cart, handleCartModal, handleAuthModal }) {
 
           <NavigationItem onClick={handleCartModal}>
             <FaShoppingCart />
-            {totalItem}
+            {totalItems}
           </NavigationItem>
 
           <NavigationItem onClick={handleAuthModal}>
