@@ -96,11 +96,11 @@ export default class App extends React.Component {
     console.log(data);
   };
 
-  changeSearchQuery = ({ target }) => {
+  changeSearchQuery = debounce(({ target }) => {
     this.setState({
       searchQuery: target.value,
     });
-  };
+  }, 300);
 
   getProductsBySearchQuery = () => {
     const normalizedSearchQuery = this.state.searchQuery.toLowerCase();
