@@ -1,11 +1,9 @@
-## 02-module-02-lesson
-### Форми.
+## 03-module-01-lesson
+### Життєвий цикл.
 
-- [Неконтрольовані елементи](https://legacy.reactjs.org/docs/uncontrolled-components.html) з event.currentTarget.elements
-- Паттерн [controlled element](https://uk.legacy.reactjs.org/docs/forms.html#gatsby-focus-wrapper)
-- Форми та робота з input, checkbox, radio, select
-- Створюємо форму реєстрації
-- [Formik](https://formik.org/docs/examples/basic)
-- Генерація id для елементів форми
-- Колекція продуктів:
-     - фільтрація за вмістом (текст)
+- [Життєвий цикл компонента](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
+- Методи життєвого циклу компонент-класів.
+- Збереження колекції продуктів в localStorage (componentDidMount та componentDidUpdate)
+- Модальне вікно (componentDidMount та componentWillUnmount)
+- Фільтер по категоріях (таби) - shouldComponentUpdate
+- Таймер і витік пам'яті з setState() без componentWillUnmount

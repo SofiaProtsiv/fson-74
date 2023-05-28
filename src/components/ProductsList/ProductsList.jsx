@@ -9,7 +9,6 @@ import {
 
 export default function ProductsList({ products, addToCart, cart }) {
   return (
-    <>
       <ProductList>
         {products.map(({ id, image, price }) => {
           const isProductInCart = cart.find((product) => product.id === id);
@@ -29,6 +28,5 @@ export default function ProductsList({ products, addToCart, cart }) {
           );
         })}
       </ProductList>
-    </>
   );
 }

@@ -1,15 +1,13 @@
 import React from "react";
 import { TopBlock, Title, MainSection } from "./app.styled";
 import Container from "./components/ui/Container";
-import Cart from "./components/Cart/Cart";
-import Header from "./components/Header/Header";
+import Cart from "./components/Cart";
+import Header from "./components/Header";
 import ProductsList from "./components/ProductsList";
-import AuthForm from "./components/Form/AuthForm";
+import AuthForm from "./components/AuthForm";
 import Search from "./components/Search";
-import OrderForm from "./components/OrderForm/OrderForm";
-
+import CategoryFilter from "./components/CategoryFilter";
 import debounce from "lodash.debounce";
-
 import products from "./assets/products";
 
 export default class App extends React.Component {
@@ -17,6 +15,7 @@ export default class App extends React.Component {
     products,
     cart: [],
     searchQuery: "",
+    category: "",
     isCartModalOpen: false,
     isAuthModalOpen: false,
   };
@@ -102,6 +101,10 @@ export default class App extends React.Component {
     });
   }, 300);
 
+  changeCategoryFilter = (selectedCategory) => {
+    this.setState({ category: selectedCategory });
+  };
+
   getProductsBySearchQuery = () => {
     const normalizedSearchQuery = this.state.searchQuery.toLowerCase();
 
@@ -113,28 +116,30 @@ export default class App extends React.Component {
   };
 
   render() {
+    const { cart, searchQuery, isCartModalOpen, isAuthModalOpen } = this.state;
     return (
       <Container>
         <Header
-          cart={this.state.cart}
+          cart={cart}
           handleCartModal={this.handleCartModal}
           handleAuthModal={this.handleAuthModal}
         />
 
-        {/* <OrderForm onSubmit={this.onSubmit}/> */}
-
         <MainSection>
           <TopBlock>
             <Title>Products</Title>
-            <Search
-              value={this.state.searchQuery}
-              onChange={this.changeSearchQuery}
-            />
+            <Search value={searchQuery} onChange={this.changeSearchQuery} />
           </TopBlock>
+
+          <CategoryFilter
+            currentCategory={this.state.category}
+            onClick={this.changeCategoryFilter}
+          />
+
           {this.getProductsBySearchQuery().length ? (
             <ProductsList
               products={this.getProductsBySearchQuery()}
-              cart={this.state.cart}
+              cart={cart}
               addToCart={this.addToCart}
             />
           ) : (
@@ -142,9 +147,9 @@ export default class App extends React.Component {
           )}
         </MainSection>
 
-        {this.state.isCartModalOpen && (
+        {isCartModalOpen && (
           <Cart
-            cart={this.state.cart}
+            cart={cart}
             removeFromCart={this.removeFromCart}
             handleCartModal={this.handleCartModal}
             handleDecrementProduct={this.handleDecrementProduct}
@@ -152,7 +157,7 @@ export default class App extends React.Component {
           />
         )}
 
-        {this.state.isAuthModalOpen && (
+        {isAuthModalOpen && (
           <AuthForm
             onSubmit={this.onSubmit}
             handleAuthModal={this.handleAuthModal}

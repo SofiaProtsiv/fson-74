@@ -39,7 +39,6 @@ export default class AuthForm extends React.Component {
     this.props.onSubmit(this.state);
 
     this.reset();
-    // this.props.handleAuthModal();
   };
 
   reset = () => {
