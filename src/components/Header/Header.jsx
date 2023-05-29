@@ -8,8 +8,7 @@ import {
   NavigationItem,
 } from "./header.styled";
 
-export default function Header({ cart, handleCartModal, handleAuthModal }) {
-  const totalItems = cart.reduce((total, { quantity }) => total + quantity, 0);
+export default function Header() {
   return (
     <HeaderWrapper>
       <Logo>E-commerse</Logo>
@@ -20,12 +19,11 @@ export default function Header({ cart, handleCartModal, handleAuthModal }) {
             <BsHeartFill />
           </NavigationItem>
 
-          <NavigationItem onClick={handleCartModal}>
-            <FaShoppingCart />
-            {totalItems}
+          <NavigationItem>
+            <FaShoppingCart />0
           </NavigationItem>
 
-          <NavigationItem onClick={handleAuthModal}>
+          <NavigationItem>
             <FaUserCircle />
           </NavigationItem>
         </NavigationWrapper>

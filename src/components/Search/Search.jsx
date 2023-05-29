@@ -3,6 +3,9 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { Label, Input, Icon } from "./search.styled";
 
 export default class Search extends React.Component {
+  handleChange=({target})=>{
+    this.props.onChange(target.value)
+  }
   render() {
     return (
       <Label>
@@ -13,7 +16,7 @@ export default class Search extends React.Component {
           name="query"
           placeholder="Search..."
           value={this.props.searchQuery}
-          onChange={this.props.onChange}
+          onChange={this.handleChange}
         />
       </Label>
     );

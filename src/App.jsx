@@ -1,169 +1,250 @@
+// import React from "react";
+// import { TopBlock, Title, MainSection } from "./app.styled";
+// import Container from "./components/ui/Container";
+// import Header from "./components/Header";
+// import ProductsList from "./components/ProductsList";
+// import Search from "./components/Search";
+// import ErrorMessage from "./components/ErrorMessage";
+// import debounce from "lodash.debounce";
+// import products from "./assets/products";
+// import { getProducts, getProductsBySearchQuery } from "./api";
+// import { Button } from "./components/ProductsList/productsList.styled";
+// import Skeleton from "./components/Skeleton";
+// export default class App extends React.Component {
+//   state = {
+//     products: [],
+//     currentPage: 1,
+//     totalPages: 0,
+//     limit: 30,
+//     skip: 0,
+//     searchQuery: "",
+//     category: "",
+//     isLoading: true,
+//     largeImage: "",
+//     error: null,
+//   };
+
+//   componentDidMount() {
+//     const { limit, skip } = this.state;
+//     getProducts({ limit, skip })
+//       .then((data) => {
+//         this.setState((prevState) => ({
+//           products: data.products,
+//           totalPages: Math.ceil(data.total / limit),
+//         }));
+//       })
+//       .catch((error) => {
+//         this.setState({ error: error.message });
+//       })
+//       .finally(() => {
+//         this.setState({
+//           isLoading: false,
+//         });
+//       });
+//   }
+//   componentDidUpdate(prevProps, prevState) {
+//     const { skip, searchQuery, limit } = this.state;
+
+//     if (prevState.searchQuery !== searchQuery || prevState.skip !== skip) {
+//       if (searchQuery === "") {
+//         getProducts({ limit, skip })
+//           .then((data) => {
+//             this.setState((prevState) => ({
+//               products: [...prevState.products, ...data.products],
+//             }));
+//           })
+//           .catch((error) => {
+//             this.setState({ error: error.message });
+//           })
+//           .finally(() => {
+//             this.setState({
+//               isLoading: false,
+//             });
+//           });
+//       } else {
+//         getProductsBySearchQuery({ searchQuery, limit, skip })
+//           .then((data) => {
+//             this.setState((prevState) => ({
+//               products: [...data.products],
+//               totalPages: Math.ceil(data.total / limit),
+//             }));
+//           })
+//           .catch((error) => {
+//             this.setState({ error: error.message });
+//           })
+//           .finally(() => {
+//             this.setState({
+//               isLoading: false,
+//             });
+//           });
+//       }
+//     }
+//   }
+
+//   changeSearchQuery = debounce((searchQuery) => {
+//     searchQuery === ""
+//       ? this.setState({
+//           products: [],
+//           currentPage: 1,
+//           skip: 0,
+//           error: "Enter keyword",
+//         })
+//       : this.setState({
+//           products: [],
+//           currentPage: 1,
+//           skip: 0,
+//           searchQuery,
+//           error: null,
+//         });
+//   }, 300);
+
+//   handleClickOnMore = () => {
+//     const { limit } = this.state;
+//     this.setState((prevState) => ({
+//       currentPage: prevState.currentPage + 1,
+//       skip: prevState.skip + limit,
+//     }));
+//   };
+
+//   render() {
+//     const { products, isLoading, searchQuery, error, totalPages, currentPage } =
+//       this.state;
+//     const showLoadMore = products.length > 0 && currentPage < totalPages;
+//     return (
+//       <>
+//         <Container>
+//           <Header />
+
+//           <MainSection>
+//             <TopBlock>
+//               <Title>Products</Title>
+//               <Search value={searchQuery} onChange={this.changeSearchQuery} />
+//             </TopBlock>
+
+//             {isLoading && <Skeleton />}
+
+//             <ProductsList products={products} />
+
+//             {showLoadMore && (
+//               <Button onClick={this.handleClickOnMore}>Load More</Button>
+//             )}
+
+//             {error && <ErrorMessage />}
+//           </MainSection>
+//         </Container>
+//       </>
+//     );
+//   }
+// }
+
 import React from "react";
-import { TopBlock, Title, MainSection } from "./app.styled";
-import Container from "./components/ui/Container";
-import Cart from "./components/Cart";
-import Header from "./components/Header";
-import ProductsList from "./components/ProductsList";
-import AuthForm from "./components/AuthForm";
-import Search from "./components/Search";
-import CategoryFilter from "./components/CategoryFilter";
-import debounce from "lodash.debounce";
-import products from "./assets/products";
 
 export default class App extends React.Component {
   state = {
-    products,
-    cart: [],
+    products: [],
     searchQuery: "",
-    category: "",
-    isCartModalOpen: false,
-    isAuthModalOpen: false,
+    currentPage: 1,
+    totalProducts: 0,
+    limit: 10,
+    isLoading: false,
+    errorMessage: "",
   };
 
-  addToCart = (productId) => {
-    const isProductInCart = this.state.cart.find(
-      (product) => product.id === productId
-    );
+  componentDidMount() {
+    this.fetchProducts();
+  }
 
-    if (!isProductInCart) {
-      const product = this.state.products.find(
-        (product) => product.id === productId
+  fetchProducts = () => {
+    const { searchQuery, currentPage, limit } = this.state;
+    const skip = (currentPage - 1) * limit;
+    const apiUrl = `https://dummyapi.com/products?search=${searchQuery}&limit=${limit}&skip=${skip}`;
+
+    this.setState({ isLoading: true });
+
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState((prevState) => ({
+          products: [...prevState.products, ...data.results],
+          totalProducts: data.totalProducts,
+          isLoading: false,
+          errorMessage: "",
+        }));
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        this.setState({
+          isLoading: false,
+          errorMessage: "An error occurred while fetching products.",
+        });
+      });
+  };
+
+  handleSearchChange = (event) => {
+    this.setState({ searchQuery: event.target.value });
+  };
+
+  handleSearchSubmit = (event) => {
+    event.preventDefault();
+    this.setState({ products: [], currentPage: 1 }, this.fetchProducts);
+  };
+
+  handleLoadMore = () => {
+    const { currentPage, limit, totalProducts } = this.state;
+    const totalPages = Math.ceil(totalProducts / limit);
+    if (currentPage < totalPages) {
+      this.setState(
+        (prevState) => ({
+          currentPage: prevState.currentPage + 1,
+        }),
+        this.fetchProducts
       );
-
-      this.setState((prevState) => ({
-        cart: [...prevState.cart, { ...product, quantity: 1 }],
-      }));
     }
-  };
-
-  handleIncrementProduct = (productId) => {
-    const product = this.state.cart.find((product) => product.id === productId);
-
-    const updatedCart = this.state.cart.map((item) => {
-      if (product.id === item.id) {
-        return { ...item, quantity: (item.quantity += 1) };
-      }
-      return item;
-    });
-
-    this.setState({ cart: updatedCart });
-  };
-
-  handleDecrementProduct = (productId) => {
-    const product = this.state.cart.find((product) => product.id === productId);
-
-    if (product.quantity <= 1) {
-      this.removeFromCart(productId);
-      return;
-    }
-
-    const updatedCart = this.state.cart.map((item) => {
-      if (product.id === item.id) {
-        return { ...item, quantity: (item.quantity -= 1) };
-      }
-      return item;
-    });
-
-    this.setState({ cart: updatedCart });
-  };
-
-  removeFromCart = (productId) => {
-    const updatedCart = this.state.cart.filter(
-      (product) => product.id !== productId
-    );
-    this.setState({ cart: updatedCart });
-  };
-
-  getProductQuantity = (productId) => {
-    const product = this.state.cart.find((product) => product.id === productId);
-    return product?.quantity;
-  };
-
-  handleCartModal = () => {
-    this.setState((prevState) => ({
-      isCartModalOpen: !prevState.isCartModalOpen,
-    }));
-  };
-
-  handleAuthModal = () => {
-    this.setState((prevState) => ({
-      isAuthModalOpen: !prevState.isAuthModalOpen,
-    }));
-  };
-
-  onSubmit = (data) => {
-    console.log(data);
-  };
-
-  changeSearchQuery = debounce(({ target }) => {
-    this.setState({
-      searchQuery: target.value,
-    });
-  }, 300);
-
-  changeCategoryFilter = (selectedCategory) => {
-    this.setState({ category: selectedCategory });
-  };
-
-  getProductsBySearchQuery = () => {
-    const normalizedSearchQuery = this.state.searchQuery.toLowerCase();
-
-    const filteredProducts = this.state.products.filter((product) =>
-      product.name.toLowerCase().includes(normalizedSearchQuery)
-    );
-
-    return filteredProducts;
   };
 
   render() {
-    const { cart, searchQuery, isCartModalOpen, isAuthModalOpen } = this.state;
+    const {
+      products,
+      searchQuery,
+      currentPage,
+      limit,
+      totalProducts,
+      isLoading,
+      errorMessage,
+    } = this.state;
+    const totalPages = Math.ceil(totalProducts / limit);
+    const showLoadMoreButton = products.length > 0 && currentPage < totalPages;
+
     return (
-      <Container>
-        <Header
-          cart={cart}
-          handleCartModal={this.handleCartModal}
-          handleAuthModal={this.handleAuthModal}
-        />
-
-        <MainSection>
-          <TopBlock>
-            <Title>Products</Title>
-            <Search value={searchQuery} onChange={this.changeSearchQuery} />
-          </TopBlock>
-
-          <CategoryFilter
-            currentCategory={this.state.category}
-            onClick={this.changeCategoryFilter}
+      <div>
+        <form onSubmit={this.handleSearchSubmit}>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={this.handleSearchChange}
+            placeholder="Search products..."
           />
+          <button type="submit">Search</button>
+        </form>
 
-          {this.getProductsBySearchQuery().length ? (
-            <ProductsList
-              products={this.getProductsBySearchQuery()}
-              cart={cart}
-              addToCart={this.addToCart}
-            />
-          ) : (
-            <p>No matches found</p>
-          )}
-        </MainSection>
+        {errorMessage && <div>{errorMessage}</div>}
 
-        {isCartModalOpen && (
-          <Cart
-            cart={cart}
-            removeFromCart={this.removeFromCart}
-            handleCartModal={this.handleCartModal}
-            handleDecrementProduct={this.handleDecrementProduct}
-            handleIncrementProduct={this.handleIncrementProduct}
-          />
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>{product.name}</li>
+            ))}
+          </ul>
         )}
 
-        {isAuthModalOpen && (
-          <AuthForm
-            onSubmit={this.onSubmit}
-            handleAuthModal={this.handleAuthModal}
-          />
+        {showLoadMoreButton && (
+          <button onClick={this.handleLoadMore} disabled={isLoading}>
+            {isLoading ? "Loading..." : "Load More"}
+          </button>
         )}
-      </Container>
+      </div>
     );
   }
 }

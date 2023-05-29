@@ -1,9 +1,8 @@
-## 03-module-01-lesson
-### Життєвий цикл.
+## 03-module-02-lesson
+### Работа с API
 
-- [Життєвий цикл компонента](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)
-- Методи життєвого циклу компонент-класів.
-- Збереження колекції продуктів в localStorage (componentDidMount та componentDidUpdate)
-- Модальне вікно (componentDidMount та componentWillUnmount)
-- Фільтер по категоріях (таби) - shouldComponentUpdate
-- Таймер і витік пам'яті з setState() без componentWillUnmount
+- Методи життєвого циклу і HTTP-запити
+- Стан і компонент для індикатора завантаження
+- Стан і компонент для обробки помилок
+- Патерн «State machine» для збереження статусу запиту
+- Утечка пам'яті при розробці компонента з активним HTTP-запитом

@@ -2,31 +2,33 @@ import {
   ProductList,
   ProductItem,
   ProductPrice,
+  ProductName,
   Button,
+  ContentWrapper,
   Wrapper,
-  ProductImage
+  ProductImage,
 } from "./productsList.styled";
 
-export default function ProductsList({ products, addToCart, cart }) {
+export default function ProductsList({ products }) {
   return (
-      <ProductList>
-        {products.map(({ id, image, price }) => {
-          const isProductInCart = cart.find((product) => product.id === id);
-          return (
-            <ProductItem key={id}>
-              <ProductImage>{image}</ProductImage>
+    <ProductList>
+      {products.map(({ id, images, title, price }) => {
+        return (
+          <ProductItem key={id}>
+            <ProductImage image={images[0]} ></ProductImage>
+            <ContentWrapper>
+              <ProductName>{title}</ProductName>
               <Wrapper>
                 <ProductPrice>${price}</ProductPrice>
-                  <Button
-                    isProductInCart={isProductInCart}
-                    onClick={() => addToCart(id)}
-                  >
-                    {isProductInCart ? "In Cart" : "Add to Cart"}
-                  </Button>
+                <Button
+                >
+                  Add to Cart
+                </Button>
               </Wrapper>
-            </ProductItem>
-          );
-        })}
-      </ProductList>
+            </ContentWrapper>
+          </ProductItem>
+        );
+      })}
+    </ProductList>
   );
 }
