@@ -13,12 +13,48 @@ import products from "./assets/products";
 export default class App extends React.Component {
   state = {
     products,
+    filteredProducts: products,
     cart: [],
     searchQuery: "",
     category: "",
     isCartModalOpen: false,
     isAuthModalOpen: false,
   };
+
+  componentDidMount() {
+    const cartLS = JSON.parse(localStorage.getItem("cart"));
+    if (cartLS) {
+      this.setState({ cart: cartLS });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    const { products, cart, searchQuery, category } = this.state;
+
+    if (prevState.cart !== cart) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    if (prevState.searchQuery !== searchQuery) {
+      const normalizedSearchQuery = searchQuery.toLowerCase();
+
+      const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(normalizedSearchQuery)
+      );
+
+      this.setState({ filteredProducts, category: "" });
+    }
+
+    if (prevState.category !== category) {
+      const normalizedSearchQuery = category.toLowerCase();
+
+      const filteredProducts = products.filter((product) =>
+        product.category.toLowerCase().includes(normalizedSearchQuery)
+      );
+
+      this.setState({ filteredProducts });
+    }
+  }
 
   addToCart = (productId) => {
     const isProductInCart = this.state.cart.find(
@@ -105,18 +141,15 @@ export default class App extends React.Component {
     this.setState({ category: selectedCategory });
   };
 
-  getProductsBySearchQuery = () => {
-    const normalizedSearchQuery = this.state.searchQuery.toLowerCase();
-
-    const filteredProducts = this.state.products.filter((product) =>
-      product.name.toLowerCase().includes(normalizedSearchQuery)
-    );
-
-    return filteredProducts;
-  };
-
   render() {
-    const { cart, searchQuery, isCartModalOpen, isAuthModalOpen } = this.state;
+    const {
+      cart,
+      searchQuery,
+      category,
+      isCartModalOpen,
+      isAuthModalOpen,
+      filteredProducts,
+    } = this.state;
     return (
       <Container>
         <Header
@@ -132,13 +165,13 @@ export default class App extends React.Component {
           </TopBlock>
 
           <CategoryFilter
-            currentCategory={this.state.category}
+            currentCategory={category}
             onClick={this.changeCategoryFilter}
           />
 
-          {this.getProductsBySearchQuery().length ? (
+          {filteredProducts.length ? (
             <ProductsList
-              products={this.getProductsBySearchQuery()}
+              products={filteredProducts}
               cart={cart}
               addToCart={this.addToCart}
             />

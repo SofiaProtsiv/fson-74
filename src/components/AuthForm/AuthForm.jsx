@@ -22,6 +22,22 @@ const INITIAL_STATE = {
 export default class AuthForm extends React.Component {
   state = { ...INITIAL_STATE };
 
+  componentDidMount() {
+    window.addEventListener("keydown", this.closeOnEsc);
+    document.body.style.overflow = "hidden";
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.closeOnEsc);
+    document.body.style.overflow = "visible";
+  }
+
+  closeOnEsc = (e) => {
+    if (e.code === "Escape") {
+      this.props.handleAuthModal();
+    }
+  };
+
   handleBackdropClick = (e) => {
     if (e.currentTarget === e.target) {
       this.props.handleAuthModal();
