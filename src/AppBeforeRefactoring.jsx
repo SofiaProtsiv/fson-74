@@ -34,7 +34,7 @@ function ProductsList({ products }) {
 }
 
 // вигляд App до рефакторингу
-export default class App extends React.Component {
+export default class AppBeforeRefactoring extends React.Component {
   state = {
     products: [],
     searchQuery: "",
