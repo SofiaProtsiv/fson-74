@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 export const TopBlock = styled.div`
+width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,4 +15,9 @@ export const Title = styled.h2`
   letter-spacing: -0.025em;
 `;
 
-export const MainSection = styled.div``
+export const MainSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;

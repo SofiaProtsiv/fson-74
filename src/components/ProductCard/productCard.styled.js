@@ -1,12 +1,5 @@
 import styled from "@emotion/styled";
 
-export const ProductList = styled.ul`
-  display: flex;
-  gap: 20px;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-`;
 export const ProductItem = styled.li`
   display: flex;
   flex-direction: column;
