@@ -1,9 +1,9 @@
 import React from "react";
 import ProductCard from "../ProductCard";
+import Skeleton from "../Skeleton";
+import ErrorMessage from "../ErrorMessage";
 import { Button, ProductList } from "./productsList.styled";
 import { getProducts } from "../../api";
-import Skeleton from "../Skeleton/Skeleton";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 const STATUS = {
   IDLE: "idle",

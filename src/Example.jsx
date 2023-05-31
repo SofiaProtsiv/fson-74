@@ -2,13 +2,16 @@ import React from "react";
 import { TopBlock, Title, MainSection } from "./app.styled";
 import Container from "./components/ui/Container";
 import Header from "./components/Header";
-import ProductsList from "./components/ProductsList";
 import Search from "./components/Search";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-import debounce from "lodash.debounce";
-import { getProducts } from "./api";
+import ErrorMessage from "./components/ErrorMessage";
 import Skeleton from "./components/Skeleton/Skeleton";
-import { Button } from "./components/ProductsList/productsList.styled";
+import ProductCard from "./components/ProductCard";
+import {
+  Button,
+  ProductList,
+} from "./components/ProductsList/productsList.styled";
+import { getProducts } from "./api";
+import debounce from "lodash.debounce";
 
 const STATUS = {
   IDLE: "idle",
@@ -17,6 +20,20 @@ const STATUS = {
   REJECTED: "rejected",
 };
 
+// вигляд ProductsList до рефакторингу
+function ProductsList({ products }) {
+  return (
+    <ProductList>
+      {products.map(({ id, images, title, price }) => {
+        return (
+          <ProductCard key={id} title={title} price={price} images={images} />
+        );
+      })}
+    </ProductList>
+  );
+}
+
+// вигляд App до рефакторингу
 export default class App extends React.Component {
   state = {
     products: [],
@@ -58,7 +75,7 @@ export default class App extends React.Component {
         products: [...products, ...data.products],
         totalPages: Math.ceil(data.total / limit),
         status: STATUS.RESOLVED,
-        error: null
+        error: null,
       });
     } catch (error) {
       this.setState({ error: error.message, status: STATUS.REJECTED });
