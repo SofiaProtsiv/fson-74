@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 
 export const ProductItem = styled.li`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -55,5 +56,20 @@ export const Button = styled.button`
 
   :hover {
     opacity: 0.85;
+  }
+`;
+
+export const Icon = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  & svg {
+    width: 20px;
+    height: 20px;
+    fill: ${(props) => (props.isProductInFavorites ? "#4f46e5" : "none")};
+    stroke: ${(props) => (props.isProductInFavorites ? "none" : "#4f46e5")};
+    stroke-width: ${(props) => (props.isProductInFavorites ? "0" : "100px")};
+    pointer-events: none;
   }
 `;

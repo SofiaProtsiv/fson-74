@@ -16,3 +16,14 @@ export const getProducts = async ({ searchQuery, limit, skip }) => {
   
   return response.json();
 };
+
+export const getProductById = async (id) => {
+
+  const response = await fetch(`${BASE_URL}/products/${id}`);
+
+  if (!response.ok) {
+    throw new Error("Smth went wrong");
+  }
+  
+  return response.json();
+};

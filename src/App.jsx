@@ -1,41 +1,36 @@
-import React from "react";
-import { TopBlock, Title, MainSection } from "./app.styled";
-import Container from "./components/ui/Container";
 import Header from "./components/Header";
 import ProductsList from "./components/ProductsList";
 import Search from "./components/Search";
+import Cart from "./components/Cart";
+import Container  from "./components/ui/Container";
+import { TopBlock, Title, MainSection } from "./app.styled";
 import debounce from "lodash.debounce";
+import { useState } from "react";
+import { useStateContext } from "./context/StateContext";
 
-export default class App extends React.Component {
-  state = {
-    searchQuery: "",
-  };
+export default function App() {
+  const [searchQuery, setSearchQuery] = useState("");
 
-  handleChangeSearchQuery = debounce((searchQuery) => {
-    this.setState({
-      searchQuery,
-    });
+  const { isCartModalOpen } = useStateContext();
+
+  const handleChangeSearchQuery = debounce((searchQuery) => {
+    setSearchQuery(searchQuery);
   }, 1000);
+  return (
+    <Container>
+      <Header />
+      <MainSection>
+        <TopBlock>
+          <Title>Products</Title>
+          <Search
+            searchQuery={searchQuery}
+            onChange={handleChangeSearchQuery}
+          />
+        </TopBlock>
 
-  render() {
-    const { searchQuery } = this.state;
-
-    return (
-      <Container>
-        <Header />
-
-        <MainSection>
-          <TopBlock>
-            <Title>Products</Title>
-            <Search
-              searchQuery={searchQuery}
-              onChange={this.handleChangeSearchQuery}
-            />
-          </TopBlock>
-
-          <ProductsList searchQuery={searchQuery} />
-        </MainSection>
-      </Container>
-    );
-  }
+        <ProductsList searchQuery={searchQuery} />
+      </MainSection>
+      {isCartModalOpen && <Cart />}
+    </Container>
+  );
 }

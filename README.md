@@ -1,8 +1,12 @@
-## 03-module-02-lesson
-### Работа с API
+## 05-module-01-lesson
+### Навігація у додатку
 
-- Методи життєвого циклу і HTTP-запити
-- Стан і компонент для індикатора завантаження
-- Стан і компонент для обробки помилок
-- Патерн «State machine» для збереження статусу запиту
-- Refactoring
+- Документація [React Router v6](https://reactrouter.com/en/main/start/tutorial)
+- Концепція SPA (Single Page Application) та CSR (Client Side Rendering)
+- Структура url-рядка та HTML5 History API
+- Компоненти BrowserRouter, Outlet, Routes, Route, NavLink, Link
+- Screen / Views / Pages and Layout
+- Хуки useParams, useLocation, useHistory, useRouteMatch
+- Вкладені маршрути та навігація
+- Динамічні URL-параметри
+- Обробка 404 c Redirect

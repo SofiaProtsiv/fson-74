@@ -5,6 +5,7 @@ export const HeaderWrapper = styled.header`
   padding: 0.5em 0;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 3rem;
 `;
 export const Logo = styled.h1`
   font-size: 1.5em;
@@ -13,7 +14,8 @@ export const Logo = styled.h1`
 `;
 export const NavigationContainer = styled.nav``;
 export const NavigationWrapper = styled.ul`
-display: flex;
+  display: flex;
+  align-items: center;
   margin: 0;
   padding: 0;
 `;
