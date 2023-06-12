@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { NavLink } from "react-router-dom";
 import {
   HeaderWrapper,
   Logo,
@@ -11,7 +12,7 @@ import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { useStateContext } from "../../context/StateContext";
 
 export default function Header() {
-  const { cart, setIsCartModalOpen } = useStateContext();
+  const { cart, setIsCartModalOpen, setIsAuthModalOpen } = useStateContext();
 
   const totalItems = useMemo(
     () => cart.reduce((total, { quantity }) => total + quantity, 0),
@@ -24,24 +25,38 @@ export default function Header() {
     }));
   };
 
+  const handleAuthModal = () => {
+    setIsAuthModalOpen((prevState) => ({
+      isAuthModalOpen: !prevState.isAuthModalOpen,
+    }));
+  };
+
   return (
     <HeaderWrapper>
-      <Logo>E-commerse</Logo>
+      <NavLink to="/">
+        <Logo>E-commerse</Logo>
+      </NavLink>
 
       <NavigationContainer>
         <NavigationWrapper>
-          <NavigationItem>
-            <BsHeartFill />
-          </NavigationItem>
+          <NavLink to="/favorites">
+            <NavigationItem>
+              <BsHeartFill />
+            </NavigationItem>
+          </NavLink>
 
-          <NavigationItem onClick={handleCartModal}>
-            <FaShoppingCart />
-            {totalItems}
-          </NavigationItem>
+          <NavLink>
+            <NavigationItem onClick={handleCartModal}>
+              <FaShoppingCart />
+              {totalItems}
+            </NavigationItem>
+          </NavLink>
 
-          <NavigationItem>
-            <FaUserCircle />
-          </NavigationItem>
+          <NavLink>
+            <NavigationItem onClick={handleAuthModal}>
+              <FaUserCircle />
+            </NavigationItem>
+          </NavLink>
         </NavigationWrapper>
       </NavigationContainer>
     </HeaderWrapper>

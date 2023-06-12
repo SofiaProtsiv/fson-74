@@ -1,36 +1,19 @@
-import Header from "./components/Header";
-import ProductsList from "./components/ProductsList";
-import Search from "./components/Search";
-import Cart from "./components/Cart";
-import Container  from "./components/ui/Container";
-import { TopBlock, Title, MainSection } from "./app.styled";
-import debounce from "lodash.debounce";
-import { useState } from "react";
-import { useStateContext } from "./context/StateContext";
+import { Route, Routes } from "react-router-dom";
+import Layout from "./layout/Layout";
+import HomeScreen from "./screens/HomeScreen";
+import FavoritesScreen from "./screens/FavoritesScreen";
+import ProductDetailsScreen from "./screens/ProductDetailsScreen";
+import NotFoundScreen from "./screens/NotFoundScreen";
 
 export default function App() {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const { isCartModalOpen } = useStateContext();
-
-  const handleChangeSearchQuery = debounce((searchQuery) => {
-    setSearchQuery(searchQuery);
-  }, 1000);
   return (
-    <Container>
-      <Header />
-      <MainSection>
-        <TopBlock>
-          <Title>Products</Title>
-          <Search
-            searchQuery={searchQuery}
-            onChange={handleChangeSearchQuery}
-          />
-        </TopBlock>
-
-        <ProductsList searchQuery={searchQuery} />
-      </MainSection>
-      {isCartModalOpen && <Cart />}
-    </Container>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomeScreen />} />
+        <Route path="product/:productId" element={<ProductDetailsScreen/>} />
+        <Route path="favorites" element={<FavoritesScreen />} />
+        <Route path="*" element={<NotFoundScreen/>}/>
+      </Route>
+    </Routes>
   );
 }

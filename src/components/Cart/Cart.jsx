@@ -51,21 +51,11 @@ export default function Cart() {
   };
 
   const handleDecrementProduct = (productId) => {
-    const product = cart.find((product) => product.id === productId);
-
-    if (product.quantity <= 1) {
-      removeFromCart(productId);
-      return;
-    }
-
-    const updatedCart = cart.map((item) => {
-      if (product.id === item.id) {
-        return { ...item, quantity: (item.quantity -= 1) };
-      }
-      return item;
-    });
-
-    setCart(updatedCart);
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
   };
 
   const removeFromCart = (productId) => {

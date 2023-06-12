@@ -11,9 +11,11 @@ import {
   Icon,
 } from "./productCard.styled";
 import { AiFillHeart } from "react-icons/ai";
+import { Link, useResolvedPath,  } from "react-router-dom";
 
 export default function ProductCard({ id, images, title, price }) {
   const [isFavorite, setIsFavorite] = useState(false);
+  const base_url = window.location.origin
 
   const { products, cart, favorites, setCart, setFavorites } =
     useStateContext();
@@ -51,7 +53,9 @@ export default function ProductCard({ id, images, title, price }) {
     <ProductItem key={id}>
       <ProductImage image={images[0]}></ProductImage>
       <ContentWrapper>
-        <ProductName>{title}</ProductName>
+        <Link to={`${base_url}/product/${id}`}>
+          <ProductName>{title}</ProductName>
+        </Link>
         <Wrapper>
           <ProductPrice>${price}</ProductPrice>
           <Button
