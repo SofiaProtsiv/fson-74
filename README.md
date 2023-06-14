@@ -1,12 +1,12 @@
-## 05-module-01-lesson
-### Навігація у додатку
+## 05-module-02-lesson
+### Розділення коду (code splitting)
 
 - Документація [React Router v6](https://reactrouter.com/en/main/start/tutorial)
-- Концепція SPA (Single Page Application) та CSR (Client Side Rendering)
-- Структура url-рядка та HTML5 History API
-- Компоненти BrowserRouter, Outlet, Routes, Route, NavLink, Link
-- Screen / Views / Pages and Layout
-- Хуки useParams, useLocation, useHistory, useRouteMatch
-- Вкладені маршрути та навігація
-- Динамічні URL-параметри
-- Обробка 404 c Redirect
+- Програмна навігація. Хук [useNavigate](https://reactrouter.com/en/main/hooks/use-navigate)
+- Хук [useSearchParams()](https://reactrouter.com/en/main/hooks/use-search-params)
+- Go Back
+- Динамічний імпорт модулів
+- [React.lazy()](https://react.dev/reference/react/lazy)
+- Webpack chunks
+- [React.Suspense](https://react.dev/reference/react/Suspense) і fallback
+- Розділення на рівні маршрутів і компонентів

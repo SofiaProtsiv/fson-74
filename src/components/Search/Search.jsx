@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Label, Input, Icon } from "./search.styled";
+import { useStateContext } from "../../context/StateContext";
 
-export default function Search({ onChange }) {
-  const [searchQuery, setSearchQuery] = useState("");
+export default function Search() {
+  const { searchParams, setSearchParams } = useStateContext();
+  const searchQuery = searchParams.get("query") || "";
 
-  const handleInput = async (e) => {
-    await setSearchQuery(e.target.value);
-
-    onChange(searchQuery);
+  const handleInput = (e) => {
+    e.target.value
+      ? setSearchParams({ query: e.target.value })
+      : setSearchParams({});
   };
 
   return (

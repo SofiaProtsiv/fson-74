@@ -13,14 +13,15 @@ const STATUS = {
   REJECTED: "rejected",
 };
 
-export default function ProductsList({ searchQuery }) {
+export default function ProductsList() {
   const [status, setStatus] = useState(STATUS.IDLE);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const limit = 30;
 
-  const { products, setProducts } = useStateContext();
+  const { products, setProducts, searchParams } = useStateContext();
+  const searchQuery = searchParams.get("query") ?? "";
 
   useEffect(() => {
     fetchProducts();

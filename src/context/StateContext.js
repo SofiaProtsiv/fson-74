@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const Context = createContext();
 
@@ -6,8 +7,8 @@ export const StateContext = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(false);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const cartLS = JSON.parse(localStorage.getItem("cart")) || [];
@@ -24,12 +25,12 @@ export const StateContext = ({ children }) => {
         setProducts,
         cart,
         setCart,
-        searchQuery,
-        setSearchQuery,
         favorites,
         setFavorites,
         isCartModalOpen,
         setIsCartModalOpen,
+        searchParams,
+        setSearchParams,
       }}
     >
       {children}

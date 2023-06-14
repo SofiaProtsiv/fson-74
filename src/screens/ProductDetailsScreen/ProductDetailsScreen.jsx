@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Suspense, useEffect, useState } from "react";
+import { NavLink, Outlet, useLocation, useParams } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
 import { getProductById } from "../../api";
 import {
   ProductDetailsWrapper,
   ProductImage,
   ProductPrice,
-  ProductCategory,
-  ProductRating,
-  ProductStock,
-  ProductBrand,
-  ProductDescription,
+  DetailsWrapper,
+  ProductsDetailsBtn,
   ProductTitle,
 } from "./productDetailsScreen.styled";
 
@@ -27,6 +24,7 @@ export default function ProductDetailsScreen() {
   const [productDetails, setProductDetails] = useState({});
 
   const { productId } = useParams();
+  const location = useLocation();
 
   useEffect(() => {
     fetchData();
@@ -51,28 +49,26 @@ export default function ProductDetailsScreen() {
   }
 
   if (status === STATUS.RESOLVED) {
-    const {
-      id,
-      images,
-      price,
-      category,
-      rating,
-      stock,
-      brand,
-      description,
-      title,
-    } = productDetails;
+    const { id, images, price, title } = productDetails;
     return (
-      <ProductDetailsWrapper id={id}>
-        <ProductImage src={images[0]} alt={title} />
-        <ProductTitle>{title}</ProductTitle>
-        <ProductPrice>Price: ${price}</ProductPrice>
-        <ProductCategory>Category: {category}</ProductCategory>
-        <ProductRating>Rating: {rating}</ProductRating>
-        <ProductStock>Stock: {stock}</ProductStock>
-        <ProductBrand>Brand: {brand}</ProductBrand>
-        <ProductDescription>Description: {description}</ProductDescription>
-      </ProductDetailsWrapper>
+      <>
+        <NavLink to={location.state?.from || "/"}>Go Back</NavLink>
+        <ProductDetailsWrapper id={id}>
+          <ProductImage src={images[0]} alt={title} />
+          <DetailsWrapper>
+            <ProductTitle>{title}</ProductTitle>
+            <ProductPrice>Price: ${price}</ProductPrice>
+
+            <ProductsDetailsBtn>
+              <NavLink to="characteristic">More characteristic</NavLink>
+            </ProductsDetailsBtn>
+
+            <Suspense fallback={<div>Loading...</div>}>
+              <Outlet />
+            </Suspense>
+          </DetailsWrapper>
+        </ProductDetailsWrapper>
+      </>
     );
   }
 
