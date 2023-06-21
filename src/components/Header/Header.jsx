@@ -10,10 +10,12 @@ import {
 import { BsHeartFill } from "react-icons/bs";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { useStateContext } from "../../context/StateContext";
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  const { cart, setIsCartModalOpen } = useStateContext();
-
+  const { setIsCartModalOpen } = useStateContext();
+  const { cart } = useSelector((state) => state.cart);
+  
   const totalItems = useMemo(
     () => cart.reduce((total, { quantity }) => total + quantity, 0),
     [cart]
@@ -35,7 +37,7 @@ export default function Header() {
 
       <NavigationContainer>
         <NavigationWrapper>
-          <NavLink to="/favorites" state={{from:location}}>
+          <NavLink to="/favorites" state={{ from: location }}>
             <NavigationItem>
               <BsHeartFill />
             </NavigationItem>

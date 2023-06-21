@@ -6,13 +6,17 @@ import App from "./App";
 
 import "./index.css";
 import { StateContext } from "./context/StateContext";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <BrowserRouter>
-    <StateContext>
-      <App />
-    </StateContext>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <StateContext>
+        <App />
+      </StateContext>
+    </BrowserRouter>
+  </Provider>
 );
