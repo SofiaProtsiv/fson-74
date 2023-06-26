@@ -6,6 +6,7 @@ import { Button, ProductList } from "./productsList.styled";
 import { getProducts } from "../../api";
 import { useStateContext } from "../../context/StateContext";
 
+
 const STATUS = {
   IDLE: "idle",
   PENDING: "pending",
@@ -62,7 +63,6 @@ export default function ProductsList() {
   if (status === STATUS.PENDING) {
     return <Skeleton />;
   }
-
   if (status === STATUS.RESOLVED) {
     return (
       <ProductList>
