@@ -1,26 +1,27 @@
+import { cartActions } from "./constants";
+
 const initialState = {
     cart: JSON.parse(localStorage.getItem("cart")) || []
   };
   
   const cartReducer = (state = initialState, action) => {
     switch (action.type) {
-      case "ADD_TO_CART":
-        const { payload } = action;
+      case cartActions.add:
+        const product = action.payload;
         
-        const isProductInCart = state.cart.find((p) => p.id === payload.id);
-        if (!isProductInCart) {
           return {
             ...state,
-            cart: [...state.cart, { ...payload, quantity: 1 }],
+            cart: [...state.cart, { ...product, quantity: 1 }],
           };
-        };
-        return state;
-      case "REMOVE_FROM_CART":
+    
+        
+      case cartActions.remove:
         return {
           ...state,
           cart: state.cart.filter((product) => product.id !== action.payload),
         };
-      case "INCREMENT_PRODUCT":
+
+      case cartActions.increment:
         return {
           ...state,
           cart: state.cart.map((product) =>
@@ -29,16 +30,8 @@ const initialState = {
               : product
           ),
         };
-      case "DECREMENT_PRODUCT":
-        const product = state.cart.find((product) => product.id === action.payload);
-  
-        if (product.quantity <= 1) {
-          return {
-            ...state,
-            cart: state.cart.filter((product) => product.id !== action.payload),
-          };
-        }
-  
+
+      case cartActions.decrement:
         return {
           ...state,
           cart: state.cart.map((product) =>

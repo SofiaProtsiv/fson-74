@@ -1,19 +1,21 @@
+import { cartActions } from "./constants";
+
 export const addToCart = (product) => ({
-    type: "ADD_TO_CART",
+    type: cartActions.add,
     payload: product,
   });
   
   export const removeFromCart = (productId) => ({
-    type: "REMOVE_FROM_CART",
+    type: cartActions.remove,
     payload: productId,
   });
   
   export const incrementProduct = (productId) => ({
-    type: "INCREMENT_PRODUCT",
+    type: cartActions.increment,
     payload: productId,
   });
   
   export const decrementProduct = (productId) => ({
-    type: "DECREMENT_PRODUCT",
+    type: cartActions.decrement,
     payload: productId,
   });

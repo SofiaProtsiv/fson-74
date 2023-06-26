@@ -13,9 +13,10 @@ import { useStateContext } from "../../context/StateContext";
 import { useSelector } from "react-redux";
 
 export default function Header() {
-  const { setIsCartModalOpen } = useStateContext();
   const { cart } = useSelector((state) => state.cart);
-  
+
+  const { setIsCartModalOpen } = useStateContext();
+
   const totalItems = useMemo(
     () => cart.reduce((total, { quantity }) => total + quantity, 0),
     [cart]
