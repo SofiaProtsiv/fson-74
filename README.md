@@ -1,4 +1,4 @@
-## 05-module-02-lesson
+## 06-module-01-lesson
 ### Управління станом. Основи Redux.
 
 - Основні концепції: store, state, actions, action creators, reducers
