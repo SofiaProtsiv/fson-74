@@ -7,16 +7,19 @@ import App from "./App";
 
 import "./index.css";
 import { StateContext } from "./context/StateContext";
-import { store } from "./redux/store";
+import { store, persistor } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <StateContext>
-        <App />
-      </StateContext>
-    </BrowserRouter>
-  </Provider>
+  <BrowserRouter>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <StateContext>
+          <App />
+        </StateContext>
+      </PersistGate>
+    </Provider>
+  </BrowserRouter>
 );

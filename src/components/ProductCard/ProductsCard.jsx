@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addToFavorites,
   removeFromFavorites,
-} from "../../redux/favorites/actions";
+} from "../../redux/favorites/slice";
 
 export default function ProductCard({ id, images, title, price }) {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -28,19 +28,19 @@ export default function ProductCard({ id, images, title, price }) {
 
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
-  const {  favorites } = useSelector((state) => state.favorites);
-
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [cart, favorites]);
+  const { favorites } = useSelector((state) => state.favorites);
 
   const isProductInCart = cart.find((product) => product.id === id);
   const isProductInFavorites = favorites.find((product) => product.id === id);
 
   const handleAddToCart = (productId) => {
+    let product;
     if (!isProductInCart) {
-      const product = products.find((product) => product.id === productId);
+      if (products.length) {
+        product = products.find((product) => product.id === productId);
+      } else {
+        product = favorites.find((product) => product.id === productId);
+      }
       dispatch(addToCart(product));
     }
   };
@@ -55,19 +55,6 @@ export default function ProductCard({ id, images, title, price }) {
 
     setIsFavorite(!isFavorite);
   };
-  // const toggleFavorite = (productId) => {
-  //   if (!isProductInFavorites) {
-  //     const product = products.find((product) => product.id === productId);
-  //     setFavorites((prevFavorites) => [...prevFavorites, product]);
-  //   } else {
-  //     const updatedFavorites = favorites.filter(
-  //       (product) => product.id !== productId
-  //     );
-  //     setFavorites(updatedFavorites);
-  //   }
-
-  //   setIsFavorite(!isFavorite);
-  // };
 
   return (
     <ProductItem key={id}>

@@ -1,19 +1,9 @@
-## 05-module-02-lesson
-### Управління станом. Основи Redux.
+## 06-module-02-lesson
+### Зменшуємо redux boilerplate
 
-- Основні концепції: store, state, actions, action creators, reducers
-- Redux DevTools
-- Створюємо та налаштовуємо сховище
-- Готуємо екшени та фабрики
-- Пишемо редюсер
-- Пакет react-redux
-- Компонент Provider
-- Хуки useDispatch і useSelector
-- Композиція редюсерів з combineReducers
-- Feature based структура файлів та папок
-
-(
-    - ProductCard.jsx => addToCart
-    - Cart.jsx => handleIncrementProduct, handleDecrementProduct, removeFromCart
-    - Header.jsx =>
-)
+- Розбираємо [Redux Toolkit](https://redux-toolkit.js.org/) і рефакторим код попереднього заняття
+- configureStore()
+- createAction()
+- createReducer()
+- createSlice()
+- Бібліотека [redux-persist](https://github.com/rt2zz/redux-persist#basic-usage)

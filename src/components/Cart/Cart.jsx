@@ -30,7 +30,7 @@ import {
   decrementProduct,
   incrementProduct,
   removeFromCart,
-} from "../../redux/cart/actions";
+} from "../../redux/cart/slice";
 
 export default function Cart() {
   const { isCartModalOpen, setIsCartModalOpen } = useStateContext();
@@ -67,38 +67,6 @@ export default function Cart() {
   const handleRemoveFromCart = (productId) => {
     dispatch(removeFromCart(productId));
   };
-
-  // const handleIncrementProduct = (productId) => {
-  //   setCart((prevCart) =>
-  //     prevCart.map((item) =>
-  //       item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-  //     )
-  //   );
-  // };
-
-  // const handleDecrementProduct = (productId) => {
-  //   const product = cart.find((product) => product.id === productId);
-
-  //   if (product.quantity <= 1) {
-  //     removeFromCart(productId);
-  //     return;
-  //   }
-
-  //   const updatedCart = cart.map((item) => {
-  //     if (product.id === item.id) {
-  //       return { ...item, quantity: (item.quantity -= 1) };
-  //     }
-  //     return item;
-  //   });
-
-  //   setCart(updatedCart);
-  // };
-
-  // const removeFromCart = (productId) => {
-  //   setCart((prevCart) =>
-  //     prevCart.filter((product) => product.id !== productId)
-  //   );
-  // };
 
   return (
     <Backdrop onClick={handleBackdrop}>
