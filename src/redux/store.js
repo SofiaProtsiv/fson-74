@@ -1,5 +1,5 @@
 import { combineReducers } from "redux"
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import {
   persistStore,
   persistReducer,
@@ -10,9 +10,9 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist'
+
 import storage from 'redux-persist/lib/storage'
-import cartReducer from "./cart/slice";
-import favoritesReducer from "./favorites/slice";
+import productsReducer from "./products/slice";
 
 const persistConfig = {
   key: 'root',
@@ -20,34 +20,20 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-  cart: cartReducer,
-  favorites: favoritesReducer
+  products: productsReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
+const middleware = [...getDefaultMiddleware({
+  serializableCheck: {
+    ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+  },
+})];
+
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    },
-  }),
+  middleware
 })
 
 export const persistor = persistStore(store)
-
-// import { combineReducers, createStore } from "redux"
-// import { configureStore } from '@reduxjs/toolkit';
-// import { devToolsEnhancer } from "@redux-devtools/extension";
-// import cartReducer from "./cart/reducer";
-// import favoritesReducer from "./favorites/reducers";
-
-// const rootReducer = combineReducers({
-//   cart: cartReducer,
-//   favorites: favoritesReducer
-// });
-
-// const enhancer = devToolsEnhancer();
-// export const store = createStore(rootReducer, enhancer);

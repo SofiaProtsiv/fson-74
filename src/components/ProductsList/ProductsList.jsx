@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../ProductCard";
 import Skeleton from "../Skeleton";
 import ErrorMessage from "../ErrorMessage";
-import { Button, ProductList } from "./productsList.styled";
+import { ProductList } from "./productsList.styled";
 import { getProducts } from "../../api";
 import { useStateContext } from "../../context/StateContext";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../../redux/products/slice";
 
 const STATUS = {
   IDLE: "idle",
@@ -14,50 +16,11 @@ const STATUS = {
 };
 
 export default function ProductsList() {
-  const [status, setStatus] = useState(STATUS.IDLE);
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const limit = 30;
-
-  const { products, setProducts, searchParams } = useStateContext();
-  const searchQuery = searchParams.get("query") ?? "";
+  const dispatch = useDispatch();
+  const { products, status, error } = useSelector((state) => state.products);
 
   useEffect(() => {
-    fetchProducts();
-  }, [searchQuery, currentPage]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-    setProducts([]);
-  }, [searchQuery]);
-
-  const fetchProducts = async () => {
-    const skip = (currentPage - 1) * limit;
-    setStatus(STATUS.PENDING);
-
-    try {
-      const data = await getProducts({ searchQuery, limit, skip });
-
-      if (!data.products.length) {
-        throw new Error("No matches found");
-      }
-
-      setProducts((prevProducts) => [...prevProducts, ...data.products]);
-      setTotalPages(Math.ceil(data.total / limit));
-      setStatus(STATUS.RESOLVED);
-      setError(null);
-    } catch (error) {
-      setError(error.message);
-      setStatus(STATUS.REJECTED);
-    }
-  };
-
-  const handleLoadMore = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const showLoadMoreButton = products.length !== 0 && currentPage < totalPages;
+    dispatch(fetchProducts())  }, [dispatch]);
 
   if (status === STATUS.PENDING) {
     return <Skeleton />;
@@ -75,12 +38,6 @@ export default function ProductsList() {
             images={images}
           />
         ))}
-
-        {showLoadMoreButton && (
-          <Button onClick={handleLoadMore} disabled={status === STATUS.PENDING}>
-            {status === STATUS.PENDING ? "Loading..." : "Load More"}
-          </Button>
-        )}
       </ProductList>
     );
   }
