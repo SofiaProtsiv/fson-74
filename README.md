@@ -2,7 +2,7 @@
 ### Асинхронний Redux. Middleware.
 
 - [Middleware. Офіційна документація](https://redux.js.org/understanding/history-and-design/middleware)
-- [Middleware. Переклад]((https://rajdee.gitbooks.io/redux-in-russian/content/docs/advanced/Middleware.html))
+- [Middleware. Переклад](https://rajdee.gitbooks.io/redux-in-russian/content/docs/advanced/Middleware.html)
 - Бібліотека redux-thunk
 - Асинхронні дії (операції)
 - HTTP-запити
