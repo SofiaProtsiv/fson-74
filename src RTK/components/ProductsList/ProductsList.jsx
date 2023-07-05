@@ -3,28 +3,10 @@ import ProductCard from "../ProductCard";
 import Skeleton from "../Skeleton";
 import ErrorMessage from "../ErrorMessage";
 import { ProductList } from "./productsList.styled";
-import { getProducts } from "../../api";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useGetProductsQuery } from "../../redux/products/productsRTK";
 
 export default function ProductsList() {
-  const queryClient = useQueryClient();
-  const {
-    isFetching,
-    isSuccess,
-    isError,
-    error,
-    data: products,
-  } = useQuery(
-    {
-      queryKey: ["products"],
-      queryFn: getProducts,
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["products"]);
-      },
-    }
-  );
+ const { data: products, error, isFetching, isError, isSuccess } = useGetProductsQuery()
 
   if (isFetching) {
     return <Skeleton />;
