@@ -7,7 +7,7 @@ import {
   ProductRating,
   ProductStock,
 } from "./productCharacteristic.styled";
-import { getProductById } from "../../api";
+import { getProductById } from "../../api/products";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 const STATUS = {

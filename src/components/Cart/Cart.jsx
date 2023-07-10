@@ -25,9 +25,14 @@ import {
   MakeOrderButton,
 } from "./cart.styled";
 import { useStateContext } from "../../context/StateContext";
+import { useDeleteFromCartMutation, useGetCartQuery } from "../../redux/products";
 
 export default function Cart() {
-  const { cart, setCart, isCartModalOpen, setIsCartModalOpen } =
+  const { data: cart } = useGetCartQuery();
+    const [deleteFromCart] =
+    useDeleteFromCartMutation();
+
+    const { isCartModalOpen, setIsCartModalOpen } =
     useStateContext();
 
   const handleBackdrop = (e) => {
@@ -38,40 +43,39 @@ export default function Cart() {
 
   const totalPrice = useMemo(
     () =>
-      cart.reduce((total, { price, quantity }) => total + price * quantity, 0),
+      cart?.reduce((total, { price, quantity }) => total + price * quantity, 0),
     [cart]
   );
 
   const handleIncrementProduct = (productId) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+    // setCart((prevCart) =>
+    //   prevCart.map((item) =>
+    //     item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+    //   )
+    // );
   };
 
   const handleDecrementProduct = (productId) => {
-    const product = cart.find((product) => product.id === productId);
+    // const product = cart.find((product) => product.id === productId);
 
-    if (product.quantity <= 1) {
-      removeFromCart(productId);
-      return;
-    }
+    // if (product.quantity <= 1) {
+    //   removeFromCart(productId);
+    //   return;
+    // }
 
-    const updatedCart = cart.map((item) => {
-      if (product.id === item.id) {
-        return { ...item, quantity: (item.quantity -= 1) };
-      }
-      return item;
-    });
+    // const updatedCart = cart.map((item) => {
+    //   if (product.id === item.id) {
+    //     return { ...item, quantity: (item.quantity -= 1) };
+    //   }
+    //   return item;
+    // });
 
-    setCart(updatedCart);
+    // setCart(updatedCart);
   };
 
-  const removeFromCart = (productId) => {
-    setCart((prevCart) =>
-      prevCart.filter((product) => product.id !== productId)
-    );
+  const removeFromCart = (productUid) => {
+    const isProductInCart = cart?.find((product) => product.uid === productUid);
+    deleteFromCart(isProductInCart.id);
   };
 
   return (
@@ -89,16 +93,16 @@ export default function Cart() {
             <p>Your cart is empty</p>
           ) : (
             <CartList>
-              {cart.map(({ id, images, price, quantity, title }) => (
-                <CartItem key={id}>
+              {cart.map(({ uid, image, price, quantity, title }) => (
+                <CartItem key={uid}>
                   <Wrapper>
-                    <ProductImage src={images[0]} alt={title} />
+                    <ProductImage src={image} alt={title} />
                     <CounterWrapper>
-                      <Button onClick={() => handleDecrementProduct(id)}>
+                      <Button onClick={() => handleDecrementProduct(uid)}>
                         -
                       </Button>
                       <ProductQuantity>{quantity}</ProductQuantity>
-                      <Button onClick={() => handleIncrementProduct(id)}>
+                      <Button onClick={() => handleIncrementProduct(uid)}>
                         +
                       </Button>
                     </CounterWrapper>
@@ -109,7 +113,7 @@ export default function Cart() {
                       </ProductPricePerItem>
                     </PriceWrapper>
                   </Wrapper>
-                  <RemoveButton onClick={() => removeFromCart(id)}>
+                  <RemoveButton onClick={() => removeFromCart(uid)}>
                     <TbTrashXFilled />
                   </RemoveButton>
                 </CartItem>

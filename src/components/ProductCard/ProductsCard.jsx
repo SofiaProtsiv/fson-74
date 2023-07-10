@@ -1,5 +1,10 @@
-import { useEffect, useState } from "react";
-import { useStateContext } from "../../context/StateContext";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  useAddToCartMutation,
+  useGetCartQuery,
+  useGetProductsQuery,
+} from "../../redux/products";
 import {
   ProductItem,
   ProductPrice,
@@ -11,57 +16,50 @@ import {
   Icon,
 } from "./productCard.styled";
 import { AiFillHeart } from "react-icons/ai";
-import { NavLink, useLocation } from "react-router-dom";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "../../redux/favorites/slice";
 
-export default function ProductCard({ id, images, title, price }) {
+export default function ProductCard({ uid, image, title, price }) {
+  const dispatch = useDispatch();
+
+  const { favorites } = useSelector((state) => state.favorites);
+
+  const { data: cart } = useGetCartQuery();
+  const { data: products } = useGetProductsQuery();
+  const [addToCart, { isLoading: isAdding }] = useAddToCartMutation();
+
   const [isFavorite, setIsFavorite] = useState(false);
-  const base_url = window.location.origin;
-  const location = useLocation();
+  
+  const isProductInCart = cart?.find((product) => product.uid === uid);
+  const isProductInFavorites = favorites.find((product) => product.uid === uid);
 
-  const { products, cart, favorites, setCart, setFavorites } =
-    useStateContext();
-
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [cart, favorites]);
-
-  const isProductInCart = cart.find((product) => product.id === id);
-  const isProductInFavorites = favorites.find((product) => product.id === id);
-
-  const addToCart = (productId) => {
-    if (!isProductInCart) {
-      const product = products.find((product) => product.id === productId);
-      setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
-    }
+  const handleProduct = () => {
+    addToCart({ uid, image, title, price, quantity: 1 });
   };
 
-  const toggleFavorite = (productId) => {
+  const handleFavorite = () => {
     if (!isProductInFavorites) {
-      const product = products.find((product) => product.id === productId);
-      setFavorites((prevFavorites) => [...prevFavorites, product]);
+      const product = products.find((product) => product.uid === uid);
+      dispatch(addToFavorites(product));
     } else {
-      const updatedFavorites = favorites.filter(
-        (product) => product.id !== productId
-      );
-      setFavorites(updatedFavorites);
+      dispatch(removeFromFavorites(uid));
     }
 
     setIsFavorite(!isFavorite);
   };
-
   return (
-    <ProductItem key={id}>
-      <ProductImage image={images[0]}></ProductImage>
+    <ProductItem key={uid}>
+      <ProductImage image={image}></ProductImage>
       <ContentWrapper>
-        <NavLink to={`${base_url}/product/${id}`} state={{ from: location }}>
-          <ProductName>{title}</ProductName>
-        </NavLink>
+        <ProductName>{title}</ProductName>
         <Wrapper>
           <ProductPrice>${price}</ProductPrice>
           <Button
             isProductInCart={isProductInCart}
-            onClick={() => addToCart(id)}
+            disabled={isAdding}
+            onClick={handleProduct}
           >
             {isProductInCart ? "In Cart" : "Add to Cart"}
           </Button>
@@ -69,7 +67,7 @@ export default function ProductCard({ id, images, title, price }) {
       </ContentWrapper>
       <Icon
         isProductInFavorites={isProductInFavorites}
-        onClick={() => toggleFavorite(id)}
+        onClick={handleFavorite}
       >
         <AiFillHeart />
       </Icon>

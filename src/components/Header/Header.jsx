@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   HeaderWrapper,
   Logo,
@@ -10,12 +10,22 @@ import {
 import { BsHeartFill } from "react-icons/bs";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { useStateContext } from "../../context/StateContext";
+import { useGetCartQuery } from "../../redux/products";
+import { useGetCurrentUserQuery } from "../../redux/auth";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../redux/auth/slice";
 
 export default function Header() {
-  const { cart, setIsCartModalOpen } = useStateContext();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { data: isUserAuthorized } = useGetCurrentUserQuery();
+  console.log(isUserAuthorized);
+  const { data: cart } = useGetCartQuery();
+  const { setIsCartModalOpen, setIsAuthModalOpen } = useStateContext();
 
   const totalItems = useMemo(
-    () => cart.reduce((total, { quantity }) => total + quantity, 0),
+    () => cart?.reduce((total, { quantity }) => total + quantity, 0),
     [cart]
   );
 
@@ -25,8 +35,17 @@ export default function Header() {
     }));
   };
 
-  const location = useLocation();
+  const handleAuthForm = () => {
+    setIsAuthModalOpen((prevState) => ({
+      isAuthModalOpen: !prevState.isAuthModalOpen,
+    }));
+  };
 
+  const location = useLocation();
+  const handleLogOut = () => {
+    dispatch(logOut());
+    navigate("/login");
+  };
   return (
     <HeaderWrapper>
       <NavLink to="/">
@@ -35,7 +54,7 @@ export default function Header() {
 
       <NavigationContainer>
         <NavigationWrapper>
-          <NavLink to="/favorites" state={{from:location}}>
+          <NavLink to="/favorites" state={{ from: location }}>
             <NavigationItem>
               <BsHeartFill />
             </NavigationItem>
@@ -48,11 +67,15 @@ export default function Header() {
             </NavigationItem>
           </NavLink>
 
-          <NavLink>
-            <NavigationItem>
-              <FaUserCircle />
-            </NavigationItem>
-          </NavLink>
+          {isUserAuthorized ? (
+            <NavigationItem onClick={handleLogOut}>Log Out</NavigationItem>
+          ) : (
+            <NavLink to="/login">
+              <NavigationItem onClick={handleAuthForm}>
+                <FaUserCircle />
+              </NavigationItem>
+            </NavLink>
+          )}
         </NavigationWrapper>
       </NavigationContainer>
     </HeaderWrapper>

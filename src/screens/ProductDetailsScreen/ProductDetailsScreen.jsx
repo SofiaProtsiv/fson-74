@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation, useParams } from "react-router-dom";
 import ErrorMessage from "../../components/ErrorMessage";
-import { getProductById } from "../../api";
+import { getProductById } from "../../api/products";
 import {
   ProductDetailsWrapper,
   ProductImage,

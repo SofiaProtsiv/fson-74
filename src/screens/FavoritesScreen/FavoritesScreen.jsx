@@ -1,10 +1,10 @@
 import { NavLink, useLocation } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductsCard";
 import { ProductList } from "../../components/ProductsList/productsList.styled";
-import { useStateContext } from "../../context/StateContext";
+import { useSelector } from "react-redux";
 
 export default function FavoritesScreen() {
-  const { favorites } = useStateContext();
+  const { favorites } = useSelector((state) => state.favorites);
   const location = useLocation();
 
   return (
@@ -13,13 +13,13 @@ export default function FavoritesScreen() {
 
       <ProductList>
         {favorites.length ? (
-          favorites.map(({ id, images, title, price }) => (
+          favorites.map(({ uid, image, title, price }) => (
             <ProductCard
-              key={id}
-              id={id}
+              key={uid}
+              uid={uid}
               title={title}
               price={price}
-              images={images}
+              image={image}
             />
           ))
         ) : (
