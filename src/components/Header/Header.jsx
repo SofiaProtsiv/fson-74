@@ -20,7 +20,6 @@ export default function Header() {
   const navigate = useNavigate();
 
   const { data: isUserAuthorized } = useGetCurrentUserQuery();
-  console.log(isUserAuthorized);
   const { data: cart } = useGetCartQuery();
   const { setIsCartModalOpen, setIsAuthModalOpen } = useStateContext();
 

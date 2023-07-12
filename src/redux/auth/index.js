@@ -4,10 +4,9 @@ export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.escuelajs.co/api/v1",
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers, { getState, endpoint }) => {
       const token = getState().auth.token;
-      console.log(getState());
-      if (token) {
+      if (token && endpoint !== 'login') {
         headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 export default function FavoritesScreen() {
   const { favorites } = useSelector((state) => state.favorites);
+
   const location = useLocation();
 
   return (
